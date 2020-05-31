@@ -1,9 +1,11 @@
 variable "resource_name" {
     default = "RG-2"
 }
-
+variable "app_service_plan_name" {
+    default     = "app_service_plan"
+}
 variable "location" {
-    default = "France Central"
+    default = "West US"
 }
 variable "subscription_id" {
     description   = "Identifiant de l'abonnement."
@@ -28,7 +30,7 @@ variable "virtual_network_name" {
 }
 variable "subnet_names" {
     description     = "Nom des sous-réseaux."
-    default         = ["Application_Gateway_subnet", "Web_tier_subnet", "Business_tier_subnet", "Data_tier_subnet", "Active_Directory_subnet"]
+    default         = ["ApplicationGatewaySubnet", "WebtierSubnet", "BusinesstierSubnet", "DatatierSubnet", "ActiveDirectorySubnet"]
 }
 variable "vm_names" {
     description     = "Nom des machines virtuelles : Web, SQL, Business Tier, Active Directory Services"
@@ -55,10 +57,10 @@ variable "set_vm_subnet_id" {
     description = "Assigne le bon sous-réseaux pour les chacunes des machines virtuelles."
     type        = list
     default     = [
-    "azurerm_subnet.part2_subnets[1].id", "azurerm_subnet.part2_subnets[1].id", "azurerm_subnet.part2_subnets[1].id",
-    "azurerm_subnet.part2_subnets[2].id", "azurerm_subnet.part2_subnets[2].id", "azurerm_subnet.part2_subnets[2].id",
-    "azurerm_subnet.part2_subnets[3].id", "azurerm_subnet.part2_subnets[3].id",
-    "azurerm_subnet.part2_subnets[4].id", "azurerm_subnet.part2_subnets[4].id"
+    "WebtierSubnet", "WebtierSubnet", "WebtierSubnet",
+    "BusinesstierSubnet", "BusinesstierSubnet", "BusinesstierSubnet",
+    "DatatierSubnet", "DatatierSubnet",
+    "ActiveDirectorySubnet", "ActiveDirectorySubnet"
     ]
 }
 
