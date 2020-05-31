@@ -5,7 +5,7 @@ variable "app_service_plan_name" {
     default     = "app_service_plan"
 }
 variable "location" {
-    default = "West US"
+    default = "West Europe"
 }
 variable "subscription_id" {
     description   = "Identifiant de l'abonnement."
@@ -98,4 +98,9 @@ variable "ag_name" {
 variable "gateway_ip_name" {
     description         = "Nom de la passerelle IP."
     default             = "gateway_ip_configuration"
+}
+variable "total_lb" {
+
+    description         = "Nombre total de Load Balancer"
+    default             = 2
 }
