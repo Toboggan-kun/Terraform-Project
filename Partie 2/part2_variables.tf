@@ -32,6 +32,9 @@ variable "subnet_names" {
     description     = "Nom des sous-réseaux."
     default         = ["ApplicationGatewaySubnet", "WebtierSubnet", "BusinesstierSubnet", "DatatierSubnet", "ActiveDirectorySubnet"]
 }
+variable "nsg_name" {
+    default         = "nsg"
+}
 variable "vm_names" {
     description     = "Nom des machines virtuelles : Web, SQL, Business Tier, Active Directory Services"
     default         = ["WEB", "SQL", "BNS", "ADS"]

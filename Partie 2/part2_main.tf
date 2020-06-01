@@ -21,17 +21,56 @@ resource "azurerm_subnet" "part2_subnets" {
     depends_on              = [azurerm_virtual_network.part2_vn]
 }
 
-#resource "azurerm_network_security_group" "part2_nsg" {
-#   
-#}
+resource "azurerm_network_security_group" "part2_nsg" {
+    name                    = var.nsg_name
+    location                = azurerm_resource_group.part2_rg.location
+    resource_group_name     = azurerm_resource_group.part2_rg.name
+    
+    security_rule {
+        name                       = "SSH"
+        priority                   = 1001
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "22"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
 
+    security_rule {
+        name                       = "HTTP"
+        priority                   = 1002
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "80"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+
+    security_rule {
+        name                       = "HTTPS"
+        priority                   = 1003
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "443"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+
+    depends_on          = [azurerm_resource_group.part2_rg]
+}
 resource "azurerm_public_ip" "part2_pip" {
     name                = var.public_IP_name
     location            = azurerm_resource_group.part2_rg.location
     resource_group_name = azurerm_resource_group.part2_rg.name
     allocation_method   = "Dynamic"
 
-    depends_on              = [azurerm_subnet.part2_subnets]
+    depends_on              = [azurerm_resource_group.part2_rg, azurerm_subnet.part2_subnets]
 }
 
 #Création des cartes réseaux internes
@@ -41,16 +80,14 @@ resource "azurerm_network_interface" "part2_nic1" {
     name                      = "int_nic-${count.index}"
     location                  = azurerm_resource_group.part2_rg.location
     resource_group_name       = azurerm_resource_group.part2_rg.name
-    #network_security_group_id = azurerm_network_security_group.part1_nsg1.id
 
     ip_configuration {
         name                          = "int_nic_configuration-${count.index}"
         private_ip_address_allocation = "Dynamic"
-        #public_ip_address_id          = azurerm_public_ip.part2_pip.id
         subnet_id                     = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/virtualNetworks/${azurerm_virtual_network.part2_vn.name}/subnets/${element(var.set_vm_subnet_id, count.index)}"
     }
 
-    depends_on              = [azurerm_subnet.part2_subnets]
+    depends_on              = [azurerm_resource_group.part2_rg, azurerm_subnet.part2_subnets]
 }
 
 #Création des cartes réseaux externes
@@ -59,17 +96,28 @@ resource "azurerm_network_interface" "part2_nic2" {
     name                      = "ext_nic-${count.index}"
     location                  = azurerm_resource_group.part2_rg.location
     resource_group_name       = azurerm_resource_group.part2_rg.name
-    #network_security_group_id = azurerm_network_security_group.part1_nsg1.id
 
     ip_configuration {
         name                          = "ext_nic_configuration-${count.index}"
         private_ip_address_allocation = "Dynamic"
-        #public_ip_address_id          = azurerm_public_ip.part2_pip.id
-        #subnet_id                     = element(var.set_vm_subnet_id, count.index)
         subnet_id                     = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/virtualNetworks/${azurerm_virtual_network.part2_vn.name}/subnets/${element(var.set_vm_subnet_id, count.index)}"
     }
-    depends_on              = [azurerm_subnet.part2_subnets, azurerm_network_interface.part2_nic1]
+    depends_on              = [azurerm_resource_group.part2_rg, azurerm_subnet.part2_subnets, azurerm_network_interface.part2_nic1]
 }
+
+resource "azurerm_network_interface_security_group_association" "part2s_nsg_nic1" {
+    count                       = 10
+    network_interface_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index}"
+    network_security_group_id   = azurerm_network_security_group.part2_nsg.id
+    depends_on                  = [azurerm_network_interface.part2_nic1, azurerm_network_security_group.part2_nsg]
+}
+resource "azurerm_network_interface_security_group_association" "part2s_nsg_nic2" {
+    count                       = 10
+    network_interface_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/networkInterfaces/ext_nic-${count.index}"
+    network_security_group_id   = azurerm_network_security_group.part2_nsg.id
+    depends_on                  = [azurerm_network_interface.part2_nic2, azurerm_network_security_group.part2_nsg]
+}
+
 ############################################################################
 #                      AZURE APPLICATION GATEWAY                           #
 ############################################################################
@@ -86,7 +134,7 @@ resource "azurerm_application_gateway" "part2_ag" {
 
     gateway_ip_configuration {
         name                    = var.gateway_ip_name
-        subnet_id = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/virtualNetworks/${azurerm_virtual_network.part2_vn.name}/subnets/${element(var.subnet_names, 0)}"
+        subnet_id               = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/virtualNetworks/${azurerm_virtual_network.part2_vn.name}/subnets/${element(var.subnet_names, 0)}"
     }
 
     frontend_port {
@@ -95,7 +143,7 @@ resource "azurerm_application_gateway" "part2_ag" {
     }
 
     frontend_ip_configuration {
-        name                 = "front_ip_conf"
+        name                    = "front_ip_conf"
         public_ip_address_id    = azurerm_public_ip.part2_pip.id
     }
 
@@ -129,13 +177,17 @@ resource "azurerm_application_gateway" "part2_ag" {
     depends_on              = [azurerm_subnet.part2_subnets, azurerm_network_interface.part2_nic1, azurerm_network_interface.part2_nic2, azurerm_public_ip.part2_pip]
 
 }
+    #Pour l'Application Gateway, association sur :
+    # - les cartes int_nic-[0-2] appartenant au sous-réseau WebTierSubnet (backend)
 
-#resource "azurerm_network_interface_application_gateway_backend_address_pool_association" "part2_ag_nic" {
-#    network_interface_id    = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${length(var.set_vm_subnet_id)}"
-#    ip_configuration_name   = "ag_ip_conf"
-#    backend_address_pool_id = azurerm_application_gateway.part2_ag.backend_address_pool[0].id
-#    depends_on              = [azurerm_network_interface.part2_nic1, azurerm_application_gateway.part2_ag]
-#}
+resource "azurerm_network_interface_application_gateway_backend_address_pool_association" "part2_ag_nic" {
+
+    count                   = 3 #Il existe 3 machines virtuelles dans le sous-réseau Web Tier Subnet
+    network_interface_id    = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index}"
+    ip_configuration_name   = "int_nic_configuration-${count.index}"
+    backend_address_pool_id = azurerm_application_gateway.part2_ag.backend_address_pool[0].id
+    depends_on              = [azurerm_network_interface.part2_nic1, azurerm_application_gateway.part2_ag]
+}
 ############################################################################
 #                           AZURE LOAD BALANCER                            #
 ############################################################################
@@ -193,20 +245,21 @@ resource "azurerm_lb_rule" "part2_lb_rule" {
     #Nombre total d'association d'interfaces réseau en backend : 5
 resource "azurerm_network_interface_backend_address_pool_association" "part2_lb_backend_pa1" {
 
-    count                           = 3
+    count                           = 3 #Il existe 3 machines virtuelles dans le sous-réseau Business Tier Subnet
     network_interface_id            = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index + 3}"
-    ip_configuration_name           = "int_nic_configuration-${count.index}"
+    ip_configuration_name           = "int_nic_configuration-${count.index + 3}"
     backend_address_pool_id         = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/loadBalancers/load_balancer-1/backendAddressPools/load_balancer_backend-1"
     depends_on                      = [azurerm_lb_backend_address_pool.part2_lb_backend, azurerm_network_interface.part2_nic1]
 }
 resource "azurerm_network_interface_backend_address_pool_association" "part2_lb_backend_pa2" {
 
-    count                           = 2
+    count                           = 2 #Il existe 3 machines virtuelles dans le sous-réseau Data Tier Subnet
     network_interface_id            = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index + 6}"
-    ip_configuration_name           = "int_nic_configuration-${count.index}"
+    ip_configuration_name           = "int_nic_configuration-${count.index + 6}" 
     backend_address_pool_id         = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/loadBalancers/load_balancer-2/backendAddressPools/load_balancer_backend-2"
     depends_on                      = [azurerm_lb_backend_address_pool.part2_lb_backend, azurerm_network_interface.part2_nic1]
 }
+
 resource "azurerm_virtual_machine" "part2_vm"{
 
     count                           = var.total_vm
@@ -231,8 +284,6 @@ resource "azurerm_virtual_machine" "part2_vm"{
     storage_os_disk {
         name                = "${element(var.set_vm_names, count.index)}_OSDisk"
         caching             = "ReadWrite"
-        #managed_disk_id     = azurerm_managed_disk.part1_md1.id
-        #managed_disk_type   = azurerm_managed_disk.part1_md1.storage_account_type
         create_option       = "FromImage"
     }
 

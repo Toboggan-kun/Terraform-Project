@@ -1,5 +1,5 @@
 resource_name   = "RGPart2"
-location        = "France Central"
+location        = "West Europe"
 subscription_id = "5b1a1eeb-7f60-440f-baf1-0ae43fcb3e6d"
 client_id       = "70077815-81e2-4ae1-89f0-43c411ac7ead"
 client_secret   = "325f0be8-9180-4394-9db5-9483786576a1"
