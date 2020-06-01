@@ -1,12 +1,23 @@
-variable "resource_name" {
-    default = "RG-3"
+variable "resource_name_1" {
+    default = "RG-3_1"
 }
+
+variable "resource_name_2" {
+    default = "RG-3_2"
+}
+
 variable "app_service_plan_name" {
     default     = "app_service_plan"
 }
-variable "location" {
+
+variable "location_1" {
     default = "West Europe"
 }
+
+variable "location_2" {
+    default = "France Central"
+}
+
 variable "subscription_id" {
     description   = "Identifiant de l'abonnement."
     default       = "5b1a1eeb-7f60-440f-baf1-0ae43fcb3e6d"
@@ -24,17 +35,34 @@ variable "tenant_id" {
     default       = "06d52c87-b8fc-4a5c-810d-e91af17dd2f4"
 }
 
-variable "virtual_network_name" {
-    description     = "Nom des réseaux virtuels."
-    default         = ["virtual_network-3_1", "virtual_network-3_2"]
+variable "virtual_network_name_1" {
+    description     = "Nom du réseau virtuel de la région primaire."
+    default         = "virtual_network-3_1"
 }
 
-variable "subnet_names" {
+variable "virtual_network_name_2" {
+    description     = "Nom du réseau virtuel de la région secondaire."
+    default         = "virtual_network-3_2"
+}
+
+variable "virtual_network_peering_name_1_to_2" {
+    description     = "Peering des deux réseaux virtuels 1 à 2."
+    default         = "virtual_network_peering"
+}
+
+variable "virtual_network_peering_name_2_to_1" {
+    description     = "Peering des deux réseaux virtuels 2 à 1."
+    default         = "virtual_network_peering"
+}
+
+variable "subnet_names_1" {
     description     = "Nom des sous-réseaux."
-    default         = [
-    "ApplicationGatewaySubnet1", "WebtierSubnet1", "BusinesstierSubnet1", "DatatierSubnet1", "ActiveDirectorySubnet1",
-    "ApplicationGatewaySubnet2", "WebtierSubnet2", "BusinesstierSubnet2", "DatatierSubnet2", "ActiveDirectorySubnet2"
-    ]
+    default         = ["ApplicationGatewaySubnet1", "WebtierSubnet1", "BusinesstierSubnet1", "DatatierSubnet1", "ActiveDirectorySubnet1"]
+}
+
+variable "subnet_names_2" {
+    description     = "Nom des sous-réseaux."
+    default         = ["ApplicationGatewaySubnet2", "WebtierSubnet2", "BusinesstierSubnet2", "DatatierSubnet2", "ActiveDirectorySubnet2"]
 }
 
 variable "vm_names" {
@@ -42,14 +70,24 @@ variable "vm_names" {
     default         = ["WEB", "SQL", "BNS", "ADS"]
 }
 
-variable "public_IP_name" {
-    default         = "pip-3"
+variable "public_IP_name_1" {
+    default         = "pip-3_1"
 }
 
-variable "total_vm" {
+variable "public_IP_name_2" {
+    default         = "pip-3_2"
+}
 
-    description     = "Nombre total de machines virtuelles à déployer."
-    default         = 20
+variable "total_vm_1" {
+
+    description     = "Nombre total de machines virtuelles à déployer pour la région 1."
+    default         = 10
+}
+
+variable "total_vm_2" {
+
+    description     = "Nombre total de machines virtuelles à déployer pour la région 2."
+    default         = 10
 }
 
 variable "total_nic" {
@@ -58,20 +96,29 @@ variable "total_nic" {
     default         = 2
 }
 
-variable "set_vm_subnet_id" {
-    description = "Assigne le bon sous-réseaux pour les chacunes des machines virtuelles."
+variable "set_vm_subnet_id_1" {
+    description = "Assigne le bon sous-réseaux pour les chacunes des machines virtuelles de la région 1."
     type        = list
     default     = [
-    "WebtierSubnet", "WebtierSubnet", "WebtierSubnet",
-    "BusinesstierSubnet", "BusinesstierSubnet", "BusinesstierSubnet",
-    "DatatierSubnet", "DatatierSubnet",
-    "ActiveDirectorySubnet", "ActiveDirectorySubnet",
-    "WebtierSubnet", "WebtierSubnet", "WebtierSubnet",
-    "BusinesstierSubnet", "BusinesstierSubnet", "BusinesstierSubnet",
-    "DatatierSubnet", "DatatierSubnet",
-    "ActiveDirectorySubnet", "ActiveDirectorySubnet"
+    "WebtierSubnet1", "WebtierSubnet1", "WebtierSubnet1",
+    "BusinesstierSubnet1", "BusinesstierSubnet1", "BusinesstierSubnet1",
+    "DatatierSubnet1", "DatatierSubnet1",
+    "ActiveDirectorySubnet1", "ActiveDirectorySubnet1"
     ]
 }
+
+variable "set_vm_subnet_id_2" {
+    description = "Assigne le bon sous-réseaux pour les chacunes des machines virtuelles de la région 2."
+    type        = list
+    default     = [
+    "WebtierSubnet2", "WebtierSubnet2", "WebtierSubnet2",
+    "BusinesstierSubnet2", "BusinesstierSubnet2", "BusinesstierSubnet2",
+    "DatatierSubnet2", "DatatierSubnet2",
+    "ActiveDirectorySubnet2", "ActiveDirectorySubnet2"
+    ]
+}
+
+
 
 variable "set_vm_names" {
     
