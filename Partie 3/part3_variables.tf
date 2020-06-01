@@ -11,11 +11,11 @@ variable "app_service_plan_name" {
 }
 
 variable "location_1" {
-    default = "West Europe"
+    default = "UK South"
 }
 
 variable "location_2" {
-    default = "France Central"
+    default = "UK West"
 }
 
 variable "subscription_id" {
@@ -43,6 +43,16 @@ variable "virtual_network_name_1" {
 variable "virtual_network_name_2" {
     description     = "Nom du réseau virtuel de la région secondaire."
     default         = "virtual_network-3_2"
+}
+
+variable "network_security_group_1" {
+    description     = "Nom du groupe de sécurité de la région 1"
+    default         = "nsg1"
+}
+
+variable "network_security_group_2" {
+    description     = "Nom du groupe de sécurité de la région 2"
+    default         = "nsg2"
 }
 
 variable "virtual_network_peering_name_1_to_2" {
@@ -118,21 +128,27 @@ variable "set_vm_subnet_id_2" {
     ]
 }
 
-
-
-variable "set_vm_names" {
+variable "set_vm_names_1" {
     
-    description = "Assigne le bon nom pour les chacunes des machines virtuelles."
+    description = "Assigne le bon nom pour les chacunes des machines virtuelles de la région 1."
     type        = list(string)
     default     = [
     "WEB-01", "WEB-02", "WEB-03", 
     "BNS-01", "BNS-02", "BNS-03", 
     "SQL-01", "SQL-02", 
     "ADS-01", "ADS-02",
-    "WEB-04", "WEB-05", "WEB-06", 
-    "BNS-04", "BNS-05", "BNS-06", 
-    "SQL-03", "SQL-04", 
-    "ADS-03", "ADS-04"
+    ]
+}
+
+variable "set_vm_names_2" {
+    
+    description = "Assigne le bon nom pour les chacunes des machines virtuelles de la région 2."
+    type        = list(string)
+    default     = [
+    "WEB-01", "WEB-02", "WEB-03", 
+    "BNS-01", "BNS-02", "BNS-03", 
+    "SQL-01", "SQL-02", 
+    "ADS-01", "ADS-02",
     ]
 }
 
@@ -140,14 +156,10 @@ variable "admin_password" {
     default     = "Admin!123"
 }
 
-variable "set_zones" {
-    description = "Assigne une zone à une machine virtuelle."
+variable "set_zones_1" {
+    description = "Assigne une zone à une machine virtuelle de la région 1."
     type        = list(string)
     default     = [
-    "1", "2", "3",
-    "1", "2", "3",
-    "1", "3",
-    "1", "3",
     "1", "2", "3",
     "1", "2", "3",
     "1", "3",
@@ -155,16 +167,33 @@ variable "set_zones" {
     ]
 }
 
-variable "ag_name" {
-    description         = "Nom de l'Application Gateway."
-    default             = "application_gateway"
+variable "set_zones_2" {
+    description = "Assigne une zone à une machine virtuelle de la région 2."
+    type        = list(string)
+    default     = [
+    "1", "2", "3",
+    "1", "2", "3",
+    "1", "3",
+    "1", "3"
+    ]
 }
-variable "gateway_ip_name" {
-    description         = "Nom de la passerelle IP."
-    default             = "gateway_ip_configuration"
-}
-variable "total_lb" {
 
-    description         = "Nombre total de Load Balancer"
-    default             = 6
+variable "traffic_manager_profile_1" {
+    description = "Création d'un profil de traffic manager pour la région 1"
+    default = "RG3TM1"
+}
+
+variable "traffic_manager_profile_2" {
+    description = "Création d'un profil de traffic manager pour la région 2"
+    default = "RG3TM2"
+}
+
+variable "traffic_manager_endpoint_1" {
+    description = "Création d'un point de terminaison pour le traffic manager 1"
+    default = "Traffic_manager_endpoint_1"
+}
+
+variable "traffic_manager_endpoint_2" {
+    description = "Création d'un point de terminaison pour le traffic manager 2"
+    default = "Traffic_manager_endpoint_2"
 }

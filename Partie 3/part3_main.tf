@@ -163,8 +163,233 @@ resource "azurerm_network_interface" "part3_nic2_2" {
     depends_on              = [azurerm_subnet.part3_subnets_2, azurerm_network_interface.part3_nic1_2]
 }
 
+# Création du groupe de sécurité de la région 1
+resource "azurerm_network_security_group" "part3_nsg_1" {
+    name                = var.network_security_group_1
+    location            = azurerm_resource_group.part3_rg_1.location
+    resource_group_name = azurerm_resource_group.part3_rg_1.name
+    
+    security_rule {
+        name                       = "SSH"
+        priority                   = 1001
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "22"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+
+    security_rule {
+        name                       = "HTTP"
+        priority                   = 1002
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "80"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+
+    security_rule {
+        name                       = "HTTPS"
+        priority                   = 1003
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "443"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+}
+
+# Création du groupe de sécurité de la région 2
+resource "azurerm_network_security_group" "part3_nsg_2" {
+    name                = var.network_security_group_2
+    location            = azurerm_resource_group.part3_rg_2.location
+    resource_group_name = azurerm_resource_group.part3_rg_2.name
+    
+    security_rule {
+        name                       = "SSH"
+        priority                   = 1001
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "22"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+
+    security_rule {
+        name                       = "HTTP"
+        priority                   = 1002
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "80"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+
+    security_rule {
+        name                       = "HTTPS"
+        priority                   = 1003
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "443"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+}
 
 
+############################################################################
+#                           TRAFFIC MANAGER                                #
+############################################################################
 
 
+resource "azurerm_traffic_manager_profile" "part3_traffic_manager_profile_1" {
+    name                = var.traffic_manager_profile_1
+    resource_group_name = azurerm_resource_group.part3_rg_1.name
 
+    traffic_routing_method = "Weighted"
+
+    dns_config {
+        relative_name = var.traffic_manager_profile_1
+        ttl           = 100
+    }
+
+    monitor_config {
+        protocol                     = "https"
+        port                         = 443
+        path                         = "/health"
+        interval_in_seconds          = 30
+        timeout_in_seconds           = 9
+        tolerated_number_of_failures = 3
+    }
+}
+
+resource "azurerm_traffic_manager_profile" "part3_traffic_manager_profile_2" {
+    name                = var.traffic_manager_profile_2
+    resource_group_name = azurerm_resource_group.part3_rg_2.name
+
+    traffic_routing_method = "Weighted"
+
+    dns_config {
+        relative_name = var.traffic_manager_profile_2
+        ttl           = 100
+    }
+
+    monitor_config {
+        protocol                     = "https"
+        port                         = 443
+        path                         = "/health"
+        interval_in_seconds          = 30
+        timeout_in_seconds           = 9
+        tolerated_number_of_failures = 3
+    }
+}
+
+
+############################################################################
+#                           MACHINES VIRTUELLES                            #
+############################################################################
+
+#Machines virtuelles de la région 1
+resource "azurerm_virtual_machine" "part3_vm_1"{
+
+    count                           = var.total_vm_1
+    name                            = element(var.set_vm_names_1, count.index)
+    location                        = azurerm_resource_group.part3_rg_1.location
+    resource_group_name             = azurerm_resource_group.part3_rg_1.name
+    vm_size                         = "Standard_B1s"
+    network_interface_ids           = [
+        "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index}",
+        "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/networkInterfaces/ext_nic-${count.index}",
+        ]
+    primary_network_interface_id    = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index}"
+    zones                           = split("", "${element(var.set_zones_1, count.index)}")
+    storage_image_reference {
+
+        publisher       = "MicrosoftWindowsServer"
+        offer           = "WindowsServer"
+        sku             = "2016-Datacenter-Server-Core-smalldisk"
+        version         = "latest"
+    }
+
+    storage_os_disk {
+        name                = "${element(var.set_vm_names_1, count.index)}_OSDisk"
+        caching             = "ReadWrite"
+        #managed_disk_id     = azurerm_managed_disk.part1_md1.id
+        #managed_disk_type   = azurerm_managed_disk.part1_md1.storage_account_type
+        create_option       = "FromImage"
+    }
+
+    os_profile {
+        computer_name   = element(var.set_vm_names_1, count.index)
+        admin_username  = "${element(var.set_vm_names_1, count.index)}_admin"
+        admin_password  = var.admin_password
+    }
+    os_profile_windows_config {
+        provision_vm_agent = "true"
+        enable_automatic_upgrades = "true"
+        winrm {
+            protocol = "http"
+            certificate_url =""
+        }
+    }
+    depends_on              = [azurerm_subnet.part3_subnets_1, azurerm_network_interface.part3_nic1_1, azurerm_network_interface.part3_nic2_1]
+}
+
+# Machines virtuelles de la région 2
+resource "azurerm_virtual_machine" "part3_vm_2"{
+
+    count                           = var.total_vm_2
+    name                            = element(var.set_vm_names_2, count.index)
+    location                        = azurerm_resource_group.part3_rg_2.location
+    resource_group_name             = azurerm_resource_group.part3_rg_2.name
+    vm_size                         = "Standard_B1s"
+    network_interface_ids           = [
+        "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index}",
+        "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/networkInterfaces/ext_nic-${count.index}",
+        ]
+    primary_network_interface_id    = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index}"
+    zones                           = split("", "${element(var.set_zones_2, count.index)}")
+    storage_image_reference {
+
+        publisher       = "MicrosoftWindowsServer"
+        offer           = "WindowsServer"
+        sku             = "2016-Datacenter-Server-Core-smalldisk"
+        version         = "latest"
+    }
+
+    storage_os_disk {
+        name                = "${element(var.set_vm_names_2, count.index)}_OSDisk"
+        caching             = "ReadWrite"
+        #managed_disk_id     = azurerm_managed_disk.part1_md1.id
+        #managed_disk_type   = azurerm_managed_disk.part1_md1.storage_account_type
+        create_option       = "FromImage"
+    }
+
+    os_profile {
+        computer_name   = element(var.set_vm_names_2, count.index)
+        admin_username  = "${element(var.set_vm_names_2, count.index)}_admin"
+        admin_password  = var.admin_password
+    }
+    os_profile_windows_config {
+        provision_vm_agent = "true"
+        enable_automatic_upgrades = "true"
+        winrm {
+            protocol = "http"
+            certificate_url =""
+        }
+    }
+    depends_on              = [azurerm_subnet.part3_subnets_2, azurerm_network_interface.part3_nic1_2, azurerm_network_interface.part3_nic2_2]
+}
