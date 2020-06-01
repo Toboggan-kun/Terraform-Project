@@ -108,7 +108,14 @@ resource "azurerm_network_interface" "part1_nic1" {
     public_ip_address_id          = azurerm_public_ip.part1_publicIP1.id
   }
 }
-#           4.4 - CREATION D'UN DISQUE MANAGE
+
+#           4.4 - LIAISON DU GROUPE DE SECURITE A LA CARTE RESEAU
+resource "azurerm_network_interface_security_group_association" "part1_nsg1_nic1" {
+  network_interface_id      = azurerm_network_interface.part1_nic1.id
+  network_security_group_id = azurerm_network_security_group.part1_nsg1.id
+}
+
+#           4.5 - CREATION D'UN DISQUE MANAGE
 
 resource "azurerm_managed_disk" "part1_md1" {
     name                 = "VMAZ_Data2"
@@ -126,7 +133,7 @@ resource "azurerm_managed_disk" "part1_md1" {
 #    caching             = "ReadWrite"
 #    create_option       = "Attach"
 #}
-#           4.5 -  CREATION DE LA MACHINE VIRTUELLE WINDOWS
+#           4.6 -  CREATION DE LA MACHINE VIRTUELLE WINDOWS
 resource "azurerm_virtual_machine" "part1_vm1"{
 
     name                    = "VMAZ"
