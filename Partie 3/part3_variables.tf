@@ -11,11 +11,11 @@ variable "app_service_plan_name" {
 }
 
 variable "location_1" {
-    default = "UK South"
+    default = "France Central"
 }
 
 variable "location_2" {
-    default = "UK West"
+    default = "North Europe"
 }
 
 variable "subscription_id" {
@@ -91,13 +91,13 @@ variable "public_IP_name_2" {
 variable "total_vm_1" {
 
     description     = "Nombre total de machines virtuelles à déployer pour la région 1."
-    default         = 10
+    default         = 8
 }
 
 variable "total_vm_2" {
 
     description     = "Nombre total de machines virtuelles à déployer pour la région 2."
-    default         = 10
+    default         = 8
 }
 
 variable "total_nic" {
@@ -196,4 +196,9 @@ variable "traffic_manager_endpoint_1" {
 variable "traffic_manager_endpoint_2" {
     description = "Création d'un point de terminaison pour le traffic manager 2"
     default = "Traffic_manager_endpoint_2"
+}
+
+variable "total_lb" {
+    description     = "Nombre total de load balancer par région."
+    default         = 3
 }

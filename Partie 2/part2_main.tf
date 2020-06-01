@@ -129,7 +129,7 @@ resource "azurerm_application_gateway" "part2_ag" {
     sku {
         name     = "Standard_Small"
         tier     = "Standard"
-        capacity = 2
+        capacity = 3
     }
 
     gateway_ip_configuration {
@@ -259,6 +259,9 @@ resource "azurerm_network_interface_backend_address_pool_association" "part2_lb_
     backend_address_pool_id         = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part2_rg.name}/providers/Microsoft.Network/loadBalancers/load_balancer-2/backendAddressPools/load_balancer_backend-2"
     depends_on                      = [azurerm_lb_backend_address_pool.part2_lb_backend, azurerm_network_interface.part2_nic1]
 }
+############################################################################
+#                           MACHINES VIRTUELLES                            #
+############################################################################
 
 resource "azurerm_virtual_machine" "part2_vm"{
 

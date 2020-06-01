@@ -296,7 +296,169 @@ resource "azurerm_traffic_manager_profile" "part3_traffic_manager_profile_2" {
         tolerated_number_of_failures = 3
     }
 }
+############################################################################
+#                           AZURE LOAD BALANCER                            #
+############################################################################
+#Load Balancer de la région primaire (IP publique)
+resource "azurerm_lb" "part3_lb-r1-pip" {
+    name                        = "load_balancer-r1_0"
+    location                    = azurerm_resource_group.part3_rg_1.location
+    resource_group_name         = azurerm_resource_group.part3_rg_1.name
 
+    frontend_ip_configuration {
+        name                                    = "frontend_ip_r1-0"  
+        public_ip_address_id                    = azurerm_public_ip.part3_pip_1.id
+    }
+    depends_on                  = [azurerm_public_ip.part3_pip_1]
+}
+resource "azurerm_lb" "part3_lb-r2-pip" {
+    name                        = "load_balancer-r2_0"
+    location                    = azurerm_resource_group.part3_rg_2.location
+    resource_group_name         = azurerm_resource_group.part3_rg_2.name
+
+    frontend_ip_configuration {
+        name                                    = "frontend_ip_r2-0"  
+        public_ip_address_id                    = azurerm_public_ip.part3_pip_2.id
+    }
+    depends_on                  = [azurerm_public_ip.part3_pip_2]
+}
+resource "azurerm_lb" "part3_lb-r1" {
+    count                       = var.total_lb - 1
+    name                        = "load_balancer-r1_${count.index + 1}"
+    location                    = azurerm_resource_group.part3_rg_1.location
+    resource_group_name         = azurerm_resource_group.part3_rg_1.name
+
+    frontend_ip_configuration {
+        name                                    = "frontend_ip_r1-${count.index + 1}"  
+        subnet_id                               = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/virtualNetworks/${azurerm_virtual_network.part3_vn_1.name}/subnets/${element(var.subnet_names_1, count.index + 2)}"
+        private_ip_address_allocation           = "Dynamic"
+    }
+    depends_on                  = [azurerm_subnet.part3_subnets_1]
+}
+#Load Balancer de la région secondaire
+resource "azurerm_lb" "part3_lb-r2" {
+    count                       = var.total_lb - 1
+    name                        = "load_balancer-r2_${count.index + 1}"
+    location                    = azurerm_resource_group.part3_rg_2.location
+    resource_group_name         = azurerm_resource_group.part3_rg_2.name
+
+    frontend_ip_configuration {
+        name                                    = "frontend_ip_r2-${count.index + 1}"  
+        subnet_id                               = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/virtualNetworks/${azurerm_virtual_network.part3_vn_2.name}/subnets/${element(var.subnet_names_2, count.index + 2)}"
+        private_ip_address_allocation           = "Dynamic"
+    }
+    depends_on                  = [azurerm_subnet.part3_subnets_2]
+}
+resource "azurerm_lb_backend_address_pool" "part3_lb_backend-r1" {
+    count                       = var.total_lb
+    name                        = "load_balancer_backend_r1-${count.index}"
+    resource_group_name         = azurerm_resource_group.part3_rg_1.name
+    loadbalancer_id             = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r1-${count.index}"
+    depends_on                  = [azurerm_lb.part3_lb-r1]
+}
+resource "azurerm_lb_backend_address_pool" "part3_lb_backend-r2" {
+    count                       = var.total_lb
+    name                        = "load_balancer_backend_r2-${count.index}"
+    resource_group_name         = azurerm_resource_group.part3_rg_2.name
+    loadbalancer_id             = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r2-${count.index}"
+    depends_on                  = [azurerm_lb.part3_lb-r2]
+}
+resource "azurerm_lb_probe" "part3_lb_probe-r1" {
+    count                           = var.total_lb
+    resource_group_name             = azurerm_resource_group.part3_rg_1.name
+    loadbalancer_id                 = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r1-${count.index}"
+    name                            = "tcp_probe_r1-${count.index}"
+    protocol                        = "tcp"
+    port                            = 80
+    interval_in_seconds             = 5
+    number_of_probes                = 2
+    depends_on                      = [azurerm_lb.part3_lb-r1]
+}
+resource "azurerm_lb_probe" "part3_lb_probe-r2" {
+    count                           = var.total_lb
+    resource_group_name             = azurerm_resource_group.part3_rg_2.name
+    loadbalancer_id                 = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r2-${count.index}"
+    name                            = "tcp_probe_r2-${count.index}"
+    protocol                        = "tcp"
+    port                            = 80
+    interval_in_seconds             = 5
+    number_of_probes                = 2
+    depends_on                      = [azurerm_lb.part3_lb-r2]
+}
+resource "azurerm_lb_rule" "part3_lb_rule-r1" {
+    count                           = var.total_lb
+    resource_group_name             = azurerm_resource_group.part3_rg_1.name
+    loadbalancer_id                 = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r1-${count.index}"
+
+    name                           = "http_rule_r1-${count.index}"
+    protocol                       = "Tcp"
+    frontend_port                  = 80
+    backend_port                   = 80
+    frontend_ip_configuration_name = "frontend_ip_r1-${count.index}"
+    backend_address_pool_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r1-${count.index}/backendAddressPools/load_balancer_backend_r1-${count.index}"
+    probe_id                       = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r1-${count.index}/probes/tcp_probe_r1-${count.index}"
+    depends_on                     = [azurerm_lb_probe.part3_lb_probe-r1]
+}
+resource "azurerm_lb_rule" "part3_lb_rule-r2" {
+    count                           = var.total_lb
+    resource_group_name             = azurerm_resource_group.part3_rg_1.name
+    loadbalancer_id                 = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r2-${count.index}"
+
+    name                           = "http_rule_r2-${count.index}"
+    protocol                       = "Tcp"
+    frontend_port                  = 80
+    backend_port                   = 80
+    frontend_ip_configuration_name = "frontend_ip_r2-${count.index}"
+    backend_address_pool_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r2-${count.index}/backendAddressPools/load_balancer_backend_r2-${count.index}"
+    probe_id                       = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r2-${count.index}/probes/tcp_probe_r2-${count.index}"
+    depends_on                     = [azurerm_lb_probe.part3_lb_probe-r2]
+}
+#Association des cartes réseaux sur les load balancer de la région 1
+resource "azurerm_network_interface_backend_address_pool_association" "part3_lb_backend_pa1" {
+
+    count                           = var.total_vm_1 
+    network_interface_id            = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index}"
+    ip_configuration_name           = "int_nic_configuration-${count.index}"
+    backend_address_pool_id         = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/loadBalancers/load_balancer-r1_${count.index}/backendAddressPools/load_balancer_backend_r1-${count.index}"
+    depends_on                      = [azurerm_lb_backend_address_pool.part3_lb_backend-r1, azurerm_network_interface.part3_nic1_1]
+}
+#Association des cartes réseaux sur les load balancer de la région 2
+resource "azurerm_network_interface_backend_address_pool_association" "part2_lb_backend_pa2" {
+
+    count                           = var.total_vm_2 
+    network_interface_id            = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index}"
+    ip_configuration_name           = "int_nic_configuration-${count.index}" 
+    backend_address_pool_id         = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/loadBalancers/load_balancer-r2_${count.index}/backendAddressPools/load_balancer_backend_r2-${count.index}"
+    depends_on                      = [azurerm_lb_backend_address_pool.part3_lb_backend-r2, azurerm_network_interface.part3_nic1_2]
+}
+#Carte réseaux région 1, internes
+resource "azurerm_network_interface_security_group_association" "part3_nsg_nic1-r1" {
+    count                       = var.total_vm_1
+    network_interface_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index}"
+    network_security_group_id   = azurerm_network_security_group.part3_nsg_1.id
+    depends_on                  = [azurerm_network_interface.part3_nic1_1, azurerm_network_security_group.part3_nsg_1]
+}
+#Carte réseaux région 1, externes
+resource "azurerm_network_interface_security_group_association" "part3_nsg_nic2-r1" {
+    count                       = var.total_vm_1
+    network_interface_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}}/providers/Microsoft.Network/networkInterfaces/ext_nic-${count.index}"
+    network_security_group_id   = azurerm_network_security_group.part3_nsg_1.id
+    depends_on                  = [azurerm_network_interface.part3_nic2_1, azurerm_network_security_group.part3_nsg_1]
+}
+#Carte réseaux région 2, internes
+resource "azurerm_network_interface_security_group_association" "part3_nsg_nic1-r2" {
+    count                       = var.total_vm_2
+    network_interface_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/networkInterfaces/int_nic-${count.index}"
+    network_security_group_id   = azurerm_network_security_group.part3_nsg_2.id
+    depends_on                  = [azurerm_network_interface.part3_nic1_2, azurerm_network_security_group.part3_nsg_2]
+}
+#Carte réseaux région 2, externes
+resource "azurerm_network_interface_security_group_association" "part2s_nsg_nic2-r2" {
+    count                       = var.total_vm_2
+    network_interface_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/networkInterfaces/ext_nic-${count.index}"
+    network_security_group_id   = azurerm_network_security_group.part3_nsg_2.id
+    depends_on                  = [azurerm_network_interface.part3_nic2_2, azurerm_network_security_group.part3_nsg_2]
+}
 
 ############################################################################
 #                           MACHINES VIRTUELLES                            #
