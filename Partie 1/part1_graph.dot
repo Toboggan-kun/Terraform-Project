@@ -1,0 +1,35 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] azurerm_managed_disk.part1_md1" [label = "azurerm_managed_disk.part1_md1", shape = "box"]
+		"[root] azurerm_network_interface.part1_nic1" [label = "azurerm_network_interface.part1_nic1", shape = "box"]
+		"[root] azurerm_network_interface_security_group_association.part1_nsg1_nic1" [label = "azurerm_network_interface_security_group_association.part1_nsg1_nic1", shape = "box"]
+		"[root] azurerm_network_security_group.part1_nsg1" [label = "azurerm_network_security_group.part1_nsg1", shape = "box"]
+		"[root] azurerm_public_ip.part1_publicIP1" [label = "azurerm_public_ip.part1_publicIP1", shape = "box"]
+		"[root] azurerm_resource_group.part1_rg1" [label = "azurerm_resource_group.part1_rg1", shape = "box"]
+		"[root] azurerm_subnet.part1_subnet1" [label = "azurerm_subnet.part1_subnet1", shape = "box"]
+		"[root] azurerm_virtual_machine.part1_vm1" [label = "azurerm_virtual_machine.part1_vm1", shape = "box"]
+		"[root] azurerm_virtual_network.part1_vn1" [label = "azurerm_virtual_network.part1_vn1", shape = "box"]
+		"[root] provider.azurerm" [label = "provider.azurerm", shape = "diamond"]
+		"[root] azurerm_managed_disk.part1_md1" -> "[root] azurerm_resource_group.part1_rg1"
+		"[root] azurerm_network_interface.part1_nic1" -> "[root] azurerm_public_ip.part1_publicIP1"
+		"[root] azurerm_network_interface.part1_nic1" -> "[root] azurerm_subnet.part1_subnet1"
+		"[root] azurerm_network_interface_security_group_association.part1_nsg1_nic1" -> "[root] azurerm_network_interface.part1_nic1"
+		"[root] azurerm_network_interface_security_group_association.part1_nsg1_nic1" -> "[root] azurerm_network_security_group.part1_nsg1"
+		"[root] azurerm_network_security_group.part1_nsg1" -> "[root] azurerm_resource_group.part1_rg1"
+		"[root] azurerm_public_ip.part1_publicIP1" -> "[root] azurerm_resource_group.part1_rg1"
+		"[root] azurerm_resource_group.part1_rg1" -> "[root] provider.azurerm"
+		"[root] azurerm_subnet.part1_subnet1" -> "[root] azurerm_virtual_network.part1_vn1"
+		"[root] azurerm_virtual_machine.part1_vm1" -> "[root] azurerm_managed_disk.part1_md1"
+		"[root] azurerm_virtual_machine.part1_vm1" -> "[root] azurerm_network_interface.part1_nic1"
+		"[root] azurerm_virtual_network.part1_vn1" -> "[root] azurerm_resource_group.part1_rg1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_security_group_association.part1_nsg1_nic1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_virtual_machine.part1_vm1"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_security_group_association.part1_nsg1_nic1"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_virtual_machine.part1_vm1"
+		"[root] root" -> "[root] meta.count-boundary (EachMode fixup)"
+		"[root] root" -> "[root] provider.azurerm (close)"
+	}
+}
+

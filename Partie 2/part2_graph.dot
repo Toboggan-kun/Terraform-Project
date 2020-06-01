@@ -1,0 +1,109 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] azurerm_application_gateway.part2_ag" [label = "azurerm_application_gateway.part2_ag", shape = "box"]
+		"[root] azurerm_lb.part2_lb" [label = "azurerm_lb.part2_lb", shape = "box"]
+		"[root] azurerm_lb_backend_address_pool.part2_lb_backend" [label = "azurerm_lb_backend_address_pool.part2_lb_backend", shape = "box"]
+		"[root] azurerm_lb_probe.part2_lb_probe" [label = "azurerm_lb_probe.part2_lb_probe", shape = "box"]
+		"[root] azurerm_lb_rule.part2_lb_rule" [label = "azurerm_lb_rule.part2_lb_rule", shape = "box"]
+		"[root] azurerm_network_interface.part2_nic1" [label = "azurerm_network_interface.part2_nic1", shape = "box"]
+		"[root] azurerm_network_interface.part2_nic2" [label = "azurerm_network_interface.part2_nic2", shape = "box"]
+		"[root] azurerm_network_interface_application_gateway_backend_address_pool_association.part2_ag_nic" [label = "azurerm_network_interface_application_gateway_backend_address_pool_association.part2_ag_nic", shape = "box"]
+		"[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa1" [label = "azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa1", shape = "box"]
+		"[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2" [label = "azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2", shape = "box"]
+		"[root] azurerm_network_interface_security_group_association.part2s_nsg_nic1" [label = "azurerm_network_interface_security_group_association.part2s_nsg_nic1", shape = "box"]
+		"[root] azurerm_network_interface_security_group_association.part2s_nsg_nic2" [label = "azurerm_network_interface_security_group_association.part2s_nsg_nic2", shape = "box"]
+		"[root] azurerm_network_security_group.part2_nsg" [label = "azurerm_network_security_group.part2_nsg", shape = "box"]
+		"[root] azurerm_public_ip.part2_pip" [label = "azurerm_public_ip.part2_pip", shape = "box"]
+		"[root] azurerm_resource_group.part2_rg" [label = "azurerm_resource_group.part2_rg", shape = "box"]
+		"[root] azurerm_subnet.part2_subnets" [label = "azurerm_subnet.part2_subnets", shape = "box"]
+		"[root] azurerm_virtual_machine.part2_vm" [label = "azurerm_virtual_machine.part2_vm", shape = "box"]
+		"[root] azurerm_virtual_network.part2_vn" [label = "azurerm_virtual_network.part2_vn", shape = "box"]
+		"[root] provider.azurerm" [label = "provider.azurerm", shape = "diamond"]
+		"[root] var.admin_password" [label = "var.admin_password", shape = "note"]
+		"[root] var.ag_name" [label = "var.ag_name", shape = "note"]
+		"[root] var.app_service_plan_name" [label = "var.app_service_plan_name", shape = "note"]
+		"[root] var.client_id" [label = "var.client_id", shape = "note"]
+		"[root] var.client_secret" [label = "var.client_secret", shape = "note"]
+		"[root] var.gateway_ip_name" [label = "var.gateway_ip_name", shape = "note"]
+		"[root] var.location" [label = "var.location", shape = "note"]
+		"[root] var.nsg_name" [label = "var.nsg_name", shape = "note"]
+		"[root] var.public_IP_name" [label = "var.public_IP_name", shape = "note"]
+		"[root] var.resource_name" [label = "var.resource_name", shape = "note"]
+		"[root] var.set_vm_names" [label = "var.set_vm_names", shape = "note"]
+		"[root] var.set_vm_subnet_id" [label = "var.set_vm_subnet_id", shape = "note"]
+		"[root] var.set_zones" [label = "var.set_zones", shape = "note"]
+		"[root] var.subnet_names" [label = "var.subnet_names", shape = "note"]
+		"[root] var.subscription_id" [label = "var.subscription_id", shape = "note"]
+		"[root] var.tenant_id" [label = "var.tenant_id", shape = "note"]
+		"[root] var.total_lb" [label = "var.total_lb", shape = "note"]
+		"[root] var.total_nic" [label = "var.total_nic", shape = "note"]
+		"[root] var.total_vm" [label = "var.total_vm", shape = "note"]
+		"[root] var.virtual_network_name" [label = "var.virtual_network_name", shape = "note"]
+		"[root] var.vm_names" [label = "var.vm_names", shape = "note"]
+		"[root] azurerm_application_gateway.part2_ag" -> "[root] azurerm_network_interface.part2_nic2"
+		"[root] azurerm_application_gateway.part2_ag" -> "[root] azurerm_public_ip.part2_pip"
+		"[root] azurerm_application_gateway.part2_ag" -> "[root] var.ag_name"
+		"[root] azurerm_application_gateway.part2_ag" -> "[root] var.gateway_ip_name"
+		"[root] azurerm_lb.part2_lb" -> "[root] azurerm_subnet.part2_subnets"
+		"[root] azurerm_lb.part2_lb" -> "[root] var.set_zones"
+		"[root] azurerm_lb.part2_lb" -> "[root] var.total_lb"
+		"[root] azurerm_lb_backend_address_pool.part2_lb_backend" -> "[root] azurerm_lb.part2_lb"
+		"[root] azurerm_lb_probe.part2_lb_probe" -> "[root] azurerm_resource_group.part2_rg"
+		"[root] azurerm_lb_probe.part2_lb_probe" -> "[root] var.total_lb"
+		"[root] azurerm_lb_rule.part2_lb_rule" -> "[root] azurerm_lb_probe.part2_lb_probe"
+		"[root] azurerm_network_interface.part2_nic1" -> "[root] azurerm_subnet.part2_subnets"
+		"[root] azurerm_network_interface.part2_nic1" -> "[root] var.set_vm_subnet_id"
+		"[root] azurerm_network_interface.part2_nic1" -> "[root] var.total_vm"
+		"[root] azurerm_network_interface.part2_nic2" -> "[root] azurerm_network_interface.part2_nic1"
+		"[root] azurerm_network_interface_application_gateway_backend_address_pool_association.part2_ag_nic" -> "[root] azurerm_application_gateway.part2_ag"
+		"[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa1" -> "[root] azurerm_lb_backend_address_pool.part2_lb_backend"
+		"[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa1" -> "[root] azurerm_network_interface.part2_nic1"
+		"[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2" -> "[root] azurerm_lb_backend_address_pool.part2_lb_backend"
+		"[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2" -> "[root] azurerm_network_interface.part2_nic1"
+		"[root] azurerm_network_interface_security_group_association.part2s_nsg_nic1" -> "[root] azurerm_network_interface.part2_nic1"
+		"[root] azurerm_network_interface_security_group_association.part2s_nsg_nic1" -> "[root] azurerm_network_security_group.part2_nsg"
+		"[root] azurerm_network_interface_security_group_association.part2s_nsg_nic2" -> "[root] azurerm_network_interface.part2_nic2"
+		"[root] azurerm_network_interface_security_group_association.part2s_nsg_nic2" -> "[root] azurerm_network_security_group.part2_nsg"
+		"[root] azurerm_network_security_group.part2_nsg" -> "[root] azurerm_resource_group.part2_rg"
+		"[root] azurerm_network_security_group.part2_nsg" -> "[root] var.nsg_name"
+		"[root] azurerm_public_ip.part2_pip" -> "[root] azurerm_subnet.part2_subnets"
+		"[root] azurerm_public_ip.part2_pip" -> "[root] var.public_IP_name"
+		"[root] azurerm_resource_group.part2_rg" -> "[root] provider.azurerm"
+		"[root] azurerm_resource_group.part2_rg" -> "[root] var.location"
+		"[root] azurerm_resource_group.part2_rg" -> "[root] var.resource_name"
+		"[root] azurerm_subnet.part2_subnets" -> "[root] azurerm_virtual_network.part2_vn"
+		"[root] azurerm_subnet.part2_subnets" -> "[root] var.subnet_names"
+		"[root] azurerm_virtual_machine.part2_vm" -> "[root] azurerm_application_gateway.part2_ag"
+		"[root] azurerm_virtual_machine.part2_vm" -> "[root] azurerm_lb.part2_lb"
+		"[root] azurerm_virtual_machine.part2_vm" -> "[root] var.admin_password"
+		"[root] azurerm_virtual_machine.part2_vm" -> "[root] var.set_vm_names"
+		"[root] azurerm_virtual_network.part2_vn" -> "[root] azurerm_resource_group.part2_rg"
+		"[root] azurerm_virtual_network.part2_vn" -> "[root] var.virtual_network_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_lb_rule.part2_lb_rule"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_application_gateway_backend_address_pool_association.part2_ag_nic"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_security_group_association.part2s_nsg_nic1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_security_group_association.part2s_nsg_nic2"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_virtual_machine.part2_vm"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] var.app_service_plan_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] var.total_nic"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] var.vm_names"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_lb_rule.part2_lb_rule"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_application_gateway_backend_address_pool_association.part2_ag_nic"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa1"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_security_group_association.part2s_nsg_nic1"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_security_group_association.part2s_nsg_nic2"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_virtual_machine.part2_vm"
+		"[root] provider.azurerm" -> "[root] var.client_id"
+		"[root] provider.azurerm" -> "[root] var.client_secret"
+		"[root] provider.azurerm" -> "[root] var.subscription_id"
+		"[root] provider.azurerm" -> "[root] var.tenant_id"
+		"[root] root" -> "[root] meta.count-boundary (EachMode fixup)"
+		"[root] root" -> "[root] provider.azurerm (close)"
+	}
+}
+

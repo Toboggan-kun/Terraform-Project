@@ -1,0 +1,201 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] azurerm_lb.part3_lb-r1" [label = "azurerm_lb.part3_lb-r1", shape = "box"]
+		"[root] azurerm_lb.part3_lb-r1-pip" [label = "azurerm_lb.part3_lb-r1-pip", shape = "box"]
+		"[root] azurerm_lb.part3_lb-r2" [label = "azurerm_lb.part3_lb-r2", shape = "box"]
+		"[root] azurerm_lb.part3_lb-r2-pip" [label = "azurerm_lb.part3_lb-r2-pip", shape = "box"]
+		"[root] azurerm_lb_backend_address_pool.part3_lb_backend-r1" [label = "azurerm_lb_backend_address_pool.part3_lb_backend-r1", shape = "box"]
+		"[root] azurerm_lb_backend_address_pool.part3_lb_backend-r2" [label = "azurerm_lb_backend_address_pool.part3_lb_backend-r2", shape = "box"]
+		"[root] azurerm_lb_probe.part3_lb_probe-r1" [label = "azurerm_lb_probe.part3_lb_probe-r1", shape = "box"]
+		"[root] azurerm_lb_probe.part3_lb_probe-r2" [label = "azurerm_lb_probe.part3_lb_probe-r2", shape = "box"]
+		"[root] azurerm_lb_rule.part3_lb_rule-r1" [label = "azurerm_lb_rule.part3_lb_rule-r1", shape = "box"]
+		"[root] azurerm_lb_rule.part3_lb_rule-r2" [label = "azurerm_lb_rule.part3_lb_rule-r2", shape = "box"]
+		"[root] azurerm_network_interface.part3_nic1_1" [label = "azurerm_network_interface.part3_nic1_1", shape = "box"]
+		"[root] azurerm_network_interface.part3_nic1_2" [label = "azurerm_network_interface.part3_nic1_2", shape = "box"]
+		"[root] azurerm_network_interface.part3_nic2_1" [label = "azurerm_network_interface.part3_nic2_1", shape = "box"]
+		"[root] azurerm_network_interface.part3_nic2_2" [label = "azurerm_network_interface.part3_nic2_2", shape = "box"]
+		"[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2" [label = "azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2", shape = "box"]
+		"[root] azurerm_network_interface_backend_address_pool_association.part3_lb_backend_pa1" [label = "azurerm_network_interface_backend_address_pool_association.part3_lb_backend_pa1", shape = "box"]
+		"[root] azurerm_network_interface_security_group_association.part2s_nsg_nic2-r2" [label = "azurerm_network_interface_security_group_association.part2s_nsg_nic2-r2", shape = "box"]
+		"[root] azurerm_network_interface_security_group_association.part3_nsg_nic1-r1" [label = "azurerm_network_interface_security_group_association.part3_nsg_nic1-r1", shape = "box"]
+		"[root] azurerm_network_interface_security_group_association.part3_nsg_nic1-r2" [label = "azurerm_network_interface_security_group_association.part3_nsg_nic1-r2", shape = "box"]
+		"[root] azurerm_network_interface_security_group_association.part3_nsg_nic2-r1" [label = "azurerm_network_interface_security_group_association.part3_nsg_nic2-r1", shape = "box"]
+		"[root] azurerm_network_security_group.part3_nsg_1" [label = "azurerm_network_security_group.part3_nsg_1", shape = "box"]
+		"[root] azurerm_network_security_group.part3_nsg_2" [label = "azurerm_network_security_group.part3_nsg_2", shape = "box"]
+		"[root] azurerm_public_ip.part3_pip_1" [label = "azurerm_public_ip.part3_pip_1", shape = "box"]
+		"[root] azurerm_public_ip.part3_pip_2" [label = "azurerm_public_ip.part3_pip_2", shape = "box"]
+		"[root] azurerm_resource_group.part3_rg_1" [label = "azurerm_resource_group.part3_rg_1", shape = "box"]
+		"[root] azurerm_resource_group.part3_rg_2" [label = "azurerm_resource_group.part3_rg_2", shape = "box"]
+		"[root] azurerm_subnet.part3_subnets_1" [label = "azurerm_subnet.part3_subnets_1", shape = "box"]
+		"[root] azurerm_subnet.part3_subnets_2" [label = "azurerm_subnet.part3_subnets_2", shape = "box"]
+		"[root] azurerm_traffic_manager_endpoint.traffic_manager_endpoint_1" [label = "azurerm_traffic_manager_endpoint.traffic_manager_endpoint_1", shape = "box"]
+		"[root] azurerm_traffic_manager_endpoint.traffic_manager_endpoint_2" [label = "azurerm_traffic_manager_endpoint.traffic_manager_endpoint_2", shape = "box"]
+		"[root] azurerm_traffic_manager_profile.part3_traffic_manager_profile_1" [label = "azurerm_traffic_manager_profile.part3_traffic_manager_profile_1", shape = "box"]
+		"[root] azurerm_traffic_manager_profile.part3_traffic_manager_profile_2" [label = "azurerm_traffic_manager_profile.part3_traffic_manager_profile_2", shape = "box"]
+		"[root] azurerm_virtual_machine.part3_vm_1" [label = "azurerm_virtual_machine.part3_vm_1", shape = "box"]
+		"[root] azurerm_virtual_machine.part3_vm_2" [label = "azurerm_virtual_machine.part3_vm_2", shape = "box"]
+		"[root] azurerm_virtual_network.part3_vn_1" [label = "azurerm_virtual_network.part3_vn_1", shape = "box"]
+		"[root] azurerm_virtual_network.part3_vn_2" [label = "azurerm_virtual_network.part3_vn_2", shape = "box"]
+		"[root] azurerm_virtual_network_peering.part3_vn_peering_1_to_2" [label = "azurerm_virtual_network_peering.part3_vn_peering_1_to_2", shape = "box"]
+		"[root] azurerm_virtual_network_peering.part3_vn_peering_2_to_1" [label = "azurerm_virtual_network_peering.part3_vn_peering_2_to_1", shape = "box"]
+		"[root] provider.azurerm" [label = "provider.azurerm", shape = "diamond"]
+		"[root] var.admin_password" [label = "var.admin_password", shape = "note"]
+		"[root] var.app_service_plan_name" [label = "var.app_service_plan_name", shape = "note"]
+		"[root] var.client_id" [label = "var.client_id", shape = "note"]
+		"[root] var.client_secret" [label = "var.client_secret", shape = "note"]
+		"[root] var.location_1" [label = "var.location_1", shape = "note"]
+		"[root] var.location_2" [label = "var.location_2", shape = "note"]
+		"[root] var.network_security_group_1" [label = "var.network_security_group_1", shape = "note"]
+		"[root] var.network_security_group_2" [label = "var.network_security_group_2", shape = "note"]
+		"[root] var.public_IP_name_1" [label = "var.public_IP_name_1", shape = "note"]
+		"[root] var.public_IP_name_2" [label = "var.public_IP_name_2", shape = "note"]
+		"[root] var.resource_name_1" [label = "var.resource_name_1", shape = "note"]
+		"[root] var.resource_name_2" [label = "var.resource_name_2", shape = "note"]
+		"[root] var.set_vm_names_1" [label = "var.set_vm_names_1", shape = "note"]
+		"[root] var.set_vm_names_2" [label = "var.set_vm_names_2", shape = "note"]
+		"[root] var.set_vm_subnet_id_1" [label = "var.set_vm_subnet_id_1", shape = "note"]
+		"[root] var.set_vm_subnet_id_2" [label = "var.set_vm_subnet_id_2", shape = "note"]
+		"[root] var.set_zones_1" [label = "var.set_zones_1", shape = "note"]
+		"[root] var.set_zones_2" [label = "var.set_zones_2", shape = "note"]
+		"[root] var.subnet_names_1" [label = "var.subnet_names_1", shape = "note"]
+		"[root] var.subnet_names_2" [label = "var.subnet_names_2", shape = "note"]
+		"[root] var.subscription_id" [label = "var.subscription_id", shape = "note"]
+		"[root] var.tenant_id" [label = "var.tenant_id", shape = "note"]
+		"[root] var.total_lb" [label = "var.total_lb", shape = "note"]
+		"[root] var.total_nic" [label = "var.total_nic", shape = "note"]
+		"[root] var.total_vm_1" [label = "var.total_vm_1", shape = "note"]
+		"[root] var.total_vm_2" [label = "var.total_vm_2", shape = "note"]
+		"[root] var.traffic_manager_endpoint_1" [label = "var.traffic_manager_endpoint_1", shape = "note"]
+		"[root] var.traffic_manager_endpoint_2" [label = "var.traffic_manager_endpoint_2", shape = "note"]
+		"[root] var.traffic_manager_profile_1" [label = "var.traffic_manager_profile_1", shape = "note"]
+		"[root] var.traffic_manager_profile_2" [label = "var.traffic_manager_profile_2", shape = "note"]
+		"[root] var.virtual_network_name_1" [label = "var.virtual_network_name_1", shape = "note"]
+		"[root] var.virtual_network_name_2" [label = "var.virtual_network_name_2", shape = "note"]
+		"[root] var.virtual_network_peering_name_1_to_2" [label = "var.virtual_network_peering_name_1_to_2", shape = "note"]
+		"[root] var.virtual_network_peering_name_2_to_1" [label = "var.virtual_network_peering_name_2_to_1", shape = "note"]
+		"[root] var.vm_names" [label = "var.vm_names", shape = "note"]
+		"[root] azurerm_lb.part3_lb-r1" -> "[root] azurerm_subnet.part3_subnets_1"
+		"[root] azurerm_lb.part3_lb-r1" -> "[root] var.total_lb"
+		"[root] azurerm_lb.part3_lb-r1-pip" -> "[root] azurerm_public_ip.part3_pip_1"
+		"[root] azurerm_lb.part3_lb-r2" -> "[root] azurerm_subnet.part3_subnets_2"
+		"[root] azurerm_lb.part3_lb-r2" -> "[root] var.total_lb"
+		"[root] azurerm_lb.part3_lb-r2-pip" -> "[root] azurerm_public_ip.part3_pip_2"
+		"[root] azurerm_lb_backend_address_pool.part3_lb_backend-r1" -> "[root] azurerm_lb.part3_lb-r1"
+		"[root] azurerm_lb_backend_address_pool.part3_lb_backend-r1" -> "[root] azurerm_lb.part3_lb-r1-pip"
+		"[root] azurerm_lb_backend_address_pool.part3_lb_backend-r2" -> "[root] azurerm_lb.part3_lb-r2"
+		"[root] azurerm_lb_backend_address_pool.part3_lb_backend-r2" -> "[root] azurerm_lb.part3_lb-r2-pip"
+		"[root] azurerm_lb_probe.part3_lb_probe-r1" -> "[root] azurerm_lb.part3_lb-r1"
+		"[root] azurerm_lb_probe.part3_lb_probe-r1" -> "[root] azurerm_lb.part3_lb-r1-pip"
+		"[root] azurerm_lb_probe.part3_lb_probe-r2" -> "[root] azurerm_lb.part3_lb-r2"
+		"[root] azurerm_lb_probe.part3_lb_probe-r2" -> "[root] azurerm_lb.part3_lb-r2-pip"
+		"[root] azurerm_lb_rule.part3_lb_rule-r1" -> "[root] azurerm_lb_probe.part3_lb_probe-r1"
+		"[root] azurerm_lb_rule.part3_lb_rule-r2" -> "[root] azurerm_lb_probe.part3_lb_probe-r2"
+		"[root] azurerm_lb_rule.part3_lb_rule-r2" -> "[root] azurerm_resource_group.part3_rg_1"
+		"[root] azurerm_network_interface.part3_nic1_1" -> "[root] azurerm_subnet.part3_subnets_1"
+		"[root] azurerm_network_interface.part3_nic1_1" -> "[root] var.set_vm_subnet_id_1"
+		"[root] azurerm_network_interface.part3_nic1_1" -> "[root] var.total_vm_1"
+		"[root] azurerm_network_interface.part3_nic1_2" -> "[root] azurerm_subnet.part3_subnets_2"
+		"[root] azurerm_network_interface.part3_nic1_2" -> "[root] var.set_vm_subnet_id_2"
+		"[root] azurerm_network_interface.part3_nic1_2" -> "[root] var.total_vm_2"
+		"[root] azurerm_network_interface.part3_nic2_1" -> "[root] azurerm_network_interface.part3_nic1_1"
+		"[root] azurerm_network_interface.part3_nic2_2" -> "[root] azurerm_network_interface.part3_nic1_2"
+		"[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2" -> "[root] azurerm_lb_backend_address_pool.part3_lb_backend-r2"
+		"[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2" -> "[root] azurerm_network_interface.part3_nic1_2"
+		"[root] azurerm_network_interface_backend_address_pool_association.part3_lb_backend_pa1" -> "[root] azurerm_lb_backend_address_pool.part3_lb_backend-r1"
+		"[root] azurerm_network_interface_backend_address_pool_association.part3_lb_backend_pa1" -> "[root] azurerm_network_interface.part3_nic1_1"
+		"[root] azurerm_network_interface_security_group_association.part2s_nsg_nic2-r2" -> "[root] azurerm_network_interface.part3_nic2_2"
+		"[root] azurerm_network_interface_security_group_association.part2s_nsg_nic2-r2" -> "[root] azurerm_network_security_group.part3_nsg_2"
+		"[root] azurerm_network_interface_security_group_association.part3_nsg_nic1-r1" -> "[root] azurerm_network_interface.part3_nic1_1"
+		"[root] azurerm_network_interface_security_group_association.part3_nsg_nic1-r1" -> "[root] azurerm_network_security_group.part3_nsg_1"
+		"[root] azurerm_network_interface_security_group_association.part3_nsg_nic1-r2" -> "[root] azurerm_network_interface.part3_nic1_2"
+		"[root] azurerm_network_interface_security_group_association.part3_nsg_nic1-r2" -> "[root] azurerm_network_security_group.part3_nsg_2"
+		"[root] azurerm_network_interface_security_group_association.part3_nsg_nic2-r1" -> "[root] azurerm_network_interface.part3_nic2_1"
+		"[root] azurerm_network_interface_security_group_association.part3_nsg_nic2-r1" -> "[root] azurerm_network_security_group.part3_nsg_1"
+		"[root] azurerm_network_security_group.part3_nsg_1" -> "[root] azurerm_resource_group.part3_rg_1"
+		"[root] azurerm_network_security_group.part3_nsg_1" -> "[root] var.network_security_group_1"
+		"[root] azurerm_network_security_group.part3_nsg_2" -> "[root] azurerm_resource_group.part3_rg_2"
+		"[root] azurerm_network_security_group.part3_nsg_2" -> "[root] var.network_security_group_2"
+		"[root] azurerm_public_ip.part3_pip_1" -> "[root] azurerm_subnet.part3_subnets_1"
+		"[root] azurerm_public_ip.part3_pip_1" -> "[root] var.public_IP_name_1"
+		"[root] azurerm_public_ip.part3_pip_2" -> "[root] azurerm_subnet.part3_subnets_2"
+		"[root] azurerm_public_ip.part3_pip_2" -> "[root] var.public_IP_name_2"
+		"[root] azurerm_resource_group.part3_rg_1" -> "[root] provider.azurerm"
+		"[root] azurerm_resource_group.part3_rg_1" -> "[root] var.location_1"
+		"[root] azurerm_resource_group.part3_rg_1" -> "[root] var.resource_name_1"
+		"[root] azurerm_resource_group.part3_rg_2" -> "[root] provider.azurerm"
+		"[root] azurerm_resource_group.part3_rg_2" -> "[root] var.location_2"
+		"[root] azurerm_resource_group.part3_rg_2" -> "[root] var.resource_name_2"
+		"[root] azurerm_subnet.part3_subnets_1" -> "[root] azurerm_virtual_network.part3_vn_1"
+		"[root] azurerm_subnet.part3_subnets_1" -> "[root] var.subnet_names_1"
+		"[root] azurerm_subnet.part3_subnets_2" -> "[root] azurerm_virtual_network.part3_vn_2"
+		"[root] azurerm_subnet.part3_subnets_2" -> "[root] var.subnet_names_2"
+		"[root] azurerm_traffic_manager_endpoint.traffic_manager_endpoint_1" -> "[root] azurerm_public_ip.part3_pip_1"
+		"[root] azurerm_traffic_manager_endpoint.traffic_manager_endpoint_1" -> "[root] azurerm_traffic_manager_profile.part3_traffic_manager_profile_1"
+		"[root] azurerm_traffic_manager_endpoint.traffic_manager_endpoint_2" -> "[root] azurerm_public_ip.part3_pip_2"
+		"[root] azurerm_traffic_manager_endpoint.traffic_manager_endpoint_2" -> "[root] azurerm_traffic_manager_profile.part3_traffic_manager_profile_2"
+		"[root] azurerm_traffic_manager_profile.part3_traffic_manager_profile_1" -> "[root] azurerm_resource_group.part3_rg_1"
+		"[root] azurerm_traffic_manager_profile.part3_traffic_manager_profile_1" -> "[root] var.traffic_manager_profile_1"
+		"[root] azurerm_traffic_manager_profile.part3_traffic_manager_profile_2" -> "[root] azurerm_resource_group.part3_rg_2"
+		"[root] azurerm_traffic_manager_profile.part3_traffic_manager_profile_2" -> "[root] var.traffic_manager_profile_2"
+		"[root] azurerm_virtual_machine.part3_vm_1" -> "[root] azurerm_network_interface.part3_nic2_1"
+		"[root] azurerm_virtual_machine.part3_vm_1" -> "[root] var.admin_password"
+		"[root] azurerm_virtual_machine.part3_vm_1" -> "[root] var.set_vm_names_1"
+		"[root] azurerm_virtual_machine.part3_vm_1" -> "[root] var.set_zones_1"
+		"[root] azurerm_virtual_machine.part3_vm_2" -> "[root] azurerm_network_interface.part3_nic2_2"
+		"[root] azurerm_virtual_machine.part3_vm_2" -> "[root] var.admin_password"
+		"[root] azurerm_virtual_machine.part3_vm_2" -> "[root] var.set_vm_names_2"
+		"[root] azurerm_virtual_machine.part3_vm_2" -> "[root] var.set_zones_2"
+		"[root] azurerm_virtual_network.part3_vn_1" -> "[root] azurerm_resource_group.part3_rg_1"
+		"[root] azurerm_virtual_network.part3_vn_1" -> "[root] var.virtual_network_name_1"
+		"[root] azurerm_virtual_network.part3_vn_2" -> "[root] azurerm_resource_group.part3_rg_2"
+		"[root] azurerm_virtual_network.part3_vn_2" -> "[root] var.virtual_network_name_2"
+		"[root] azurerm_virtual_network_peering.part3_vn_peering_1_to_2" -> "[root] azurerm_virtual_network.part3_vn_1"
+		"[root] azurerm_virtual_network_peering.part3_vn_peering_1_to_2" -> "[root] azurerm_virtual_network.part3_vn_2"
+		"[root] azurerm_virtual_network_peering.part3_vn_peering_1_to_2" -> "[root] var.virtual_network_peering_name_1_to_2"
+		"[root] azurerm_virtual_network_peering.part3_vn_peering_2_to_1" -> "[root] azurerm_virtual_network.part3_vn_1"
+		"[root] azurerm_virtual_network_peering.part3_vn_peering_2_to_1" -> "[root] azurerm_virtual_network.part3_vn_2"
+		"[root] azurerm_virtual_network_peering.part3_vn_peering_2_to_1" -> "[root] var.virtual_network_peering_name_2_to_1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_lb_rule.part3_lb_rule-r1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_lb_rule.part3_lb_rule-r2"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_backend_address_pool_association.part3_lb_backend_pa1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_security_group_association.part2s_nsg_nic2-r2"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_security_group_association.part3_nsg_nic1-r1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_security_group_association.part3_nsg_nic1-r2"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_network_interface_security_group_association.part3_nsg_nic2-r1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_traffic_manager_endpoint.traffic_manager_endpoint_1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_traffic_manager_endpoint.traffic_manager_endpoint_2"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_virtual_machine.part3_vm_1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_virtual_machine.part3_vm_2"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_virtual_network_peering.part3_vn_peering_1_to_2"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] azurerm_virtual_network_peering.part3_vn_peering_2_to_1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] var.app_service_plan_name"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] var.total_nic"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] var.traffic_manager_endpoint_1"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] var.traffic_manager_endpoint_2"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] var.vm_names"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_lb_rule.part3_lb_rule-r1"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_lb_rule.part3_lb_rule-r2"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_backend_address_pool_association.part2_lb_backend_pa2"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_backend_address_pool_association.part3_lb_backend_pa1"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_security_group_association.part2s_nsg_nic2-r2"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_security_group_association.part3_nsg_nic1-r1"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_security_group_association.part3_nsg_nic1-r2"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_network_interface_security_group_association.part3_nsg_nic2-r1"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_traffic_manager_endpoint.traffic_manager_endpoint_1"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_traffic_manager_endpoint.traffic_manager_endpoint_2"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_virtual_machine.part3_vm_1"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_virtual_machine.part3_vm_2"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_virtual_network_peering.part3_vn_peering_1_to_2"
+		"[root] provider.azurerm (close)" -> "[root] azurerm_virtual_network_peering.part3_vn_peering_2_to_1"
+		"[root] provider.azurerm" -> "[root] var.client_id"
+		"[root] provider.azurerm" -> "[root] var.client_secret"
+		"[root] provider.azurerm" -> "[root] var.subscription_id"
+		"[root] provider.azurerm" -> "[root] var.tenant_id"
+		"[root] root" -> "[root] meta.count-boundary (EachMode fixup)"
+		"[root] root" -> "[root] provider.azurerm (close)"
+	}
+}
+
