@@ -354,14 +354,14 @@ resource "azurerm_lb_backend_address_pool" "part3_lb_backend-r1" {
     name                        = "load_balancer_backend_r1-${count.index}"
     resource_group_name         = azurerm_resource_group.part3_rg_1.name
     loadbalancer_id             = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r1-${count.index}"
-    depends_on                  = [azurerm_lb.part3_lb-r1]
+    depends_on                  = [azurerm_lb.part3_lb-r1, azurerm_lb.part3_lb-r1-pip]
 }
 resource "azurerm_lb_backend_address_pool" "part3_lb_backend-r2" {
     count                       = var.total_lb
     name                        = "load_balancer_backend_r2-${count.index}"
     resource_group_name         = azurerm_resource_group.part3_rg_2.name
     loadbalancer_id             = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r2-${count.index}"
-    depends_on                  = [azurerm_lb.part3_lb-r2]
+    depends_on                  = [azurerm_lb.part3_lb-r2, azurerm_lb.part3_lb-r2-pip]
 }
 resource "azurerm_lb_probe" "part3_lb_probe-r1" {
     count                           = var.total_lb
@@ -372,7 +372,7 @@ resource "azurerm_lb_probe" "part3_lb_probe-r1" {
     port                            = 80
     interval_in_seconds             = 5
     number_of_probes                = 2
-    depends_on                      = [azurerm_lb.part3_lb-r1]
+    depends_on                      = [azurerm_lb.part3_lb-r1, azurerm_lb.part3_lb-r1-pip]
 }
 resource "azurerm_lb_probe" "part3_lb_probe-r2" {
     count                           = var.total_lb
@@ -383,7 +383,7 @@ resource "azurerm_lb_probe" "part3_lb_probe-r2" {
     port                            = 80
     interval_in_seconds             = 5
     number_of_probes                = 2
-    depends_on                      = [azurerm_lb.part3_lb-r2]
+    depends_on                      = [azurerm_lb.part3_lb-r2, azurerm_lb.part3_lb-r2-pip]
 }
 resource "azurerm_lb_rule" "part3_lb_rule-r1" {
     count                           = var.total_lb
@@ -397,7 +397,7 @@ resource "azurerm_lb_rule" "part3_lb_rule-r1" {
     frontend_ip_configuration_name = "frontend_ip_r1-${count.index}"
     backend_address_pool_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r1-${count.index}/backendAddressPools/load_balancer_backend_r1-${count.index}"
     probe_id                       = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r1-${count.index}/probes/tcp_probe_r1-${count.index}"
-    depends_on                     = [azurerm_lb_probe.part3_lb_probe-r1]
+    depends_on                     = [azurerm_lb_probe.part3_lb_probe-r1, azurerm_lb.part3_lb-r1-pip, azurerm_lb.part3_lb-r1]
 }
 resource "azurerm_lb_rule" "part3_lb_rule-r2" {
     count                           = var.total_lb
@@ -411,7 +411,7 @@ resource "azurerm_lb_rule" "part3_lb_rule-r2" {
     frontend_ip_configuration_name = "frontend_ip_r2-${count.index}"
     backend_address_pool_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r2-${count.index}/backendAddressPools/load_balancer_backend_r2-${count.index}"
     probe_id                       = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_2.name}/providers/Microsoft.Network/loadBalancers/load_balancer_r2-${count.index}/probes/tcp_probe_r2-${count.index}"
-    depends_on                     = [azurerm_lb_probe.part3_lb_probe-r2]
+    depends_on                     = [azurerm_lb_probe.part3_lb_probe-r2, azurerm_lb.part3_lb-r2-pip, azurerm_lb.part3_lb-r2]
 }
 #Association des cartes réseaux sur les load balancer de la région 1
 resource "azurerm_network_interface_backend_address_pool_association" "part3_lb_backend_pa1" {
@@ -441,7 +441,7 @@ resource "azurerm_network_interface_security_group_association" "part3_nsg_nic1-
 #Carte réseaux région 1, externes
 resource "azurerm_network_interface_security_group_association" "part3_nsg_nic2-r1" {
     count                       = var.total_vm_1
-    network_interface_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}}/providers/Microsoft.Network/networkInterfaces/ext_nic-${count.index}"
+    network_interface_id        = "/subscriptions/${var.subscription_id}/resourceGroups/${azurerm_resource_group.part3_rg_1.name}/providers/Microsoft.Network/networkInterfaces/ext_nic-${count.index}"
     network_security_group_id   = azurerm_network_security_group.part3_nsg_1.id
     depends_on                  = [azurerm_network_interface.part3_nic2_1, azurerm_network_security_group.part3_nsg_1]
 }
