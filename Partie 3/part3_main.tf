@@ -75,7 +75,7 @@ resource "azurerm_public_ip" "part3_pip_1" {
     location            = azurerm_resource_group.part3_rg_1.location
     resource_group_name = azurerm_resource_group.part3_rg_1.name
     allocation_method   = "Dynamic"
-
+    domain_name_label   = "rg3tm1"
     depends_on              = [azurerm_subnet.part3_subnets_1]
 }
 
@@ -83,6 +83,7 @@ resource "azurerm_public_ip" "part3_pip_2" {
     name                = var.public_IP_name_2
     location            = azurerm_resource_group.part3_rg_2.location
     resource_group_name = azurerm_resource_group.part3_rg_2.name
+    domain_name_label   = "rg3tm2"
     allocation_method   = "Dynamic"
 
     depends_on              = [azurerm_subnet.part3_subnets_2]
@@ -296,6 +297,24 @@ resource "azurerm_traffic_manager_profile" "part3_traffic_manager_profile_2" {
         tolerated_number_of_failures = 3
     }
 }
+
+resource "azurerm_traffic_manager_endpoint" "traffic_manager_endpoint_1" {
+    name                = var.traffic_manager_profile_1
+    resource_group_name = azurerm_resource_group.part3_rg_1.name
+    profile_name        = azurerm_traffic_manager_profile.part3_traffic_manager_profile_1.name
+    weight              = 100
+    type                = "azureEndpoints"
+    target_resource_id  = azurerm_public_ip.part3_pip_1.id
+}
+resource "azurerm_traffic_manager_endpoint" "traffic_manager_endpoint_2" {
+    name                = var.traffic_manager_profile_2
+    resource_group_name = azurerm_resource_group.part3_rg_2.name
+    profile_name        = azurerm_traffic_manager_profile.part3_traffic_manager_profile_2.name
+    weight              = 100
+    type                = "azureEndpoints"
+    target_resource_id  = azurerm_public_ip.part3_pip_2.id
+}
+
 ############################################################################
 #                           AZURE LOAD BALANCER                            #
 ############################################################################

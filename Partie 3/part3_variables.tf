@@ -1,9 +1,9 @@
 variable "resource_name_1" {
-    default = "RG-3_1"
+    default = "RG-3-1"
 }
 
 variable "resource_name_2" {
-    default = "RG-3_2"
+    default = "RG-3-2"
 }
 
 variable "app_service_plan_name" {
